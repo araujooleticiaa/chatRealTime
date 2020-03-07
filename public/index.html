@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat em tempo real</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form id="chat">
+        <h2>Chat</h2>
+        <div class="messages"></div>
+        <input type="text" name="username" placeholder="👤 Digite seu usuário">
+        <input type="text" name="message" placeholder="✍ Digite sua mensagem">
+        <button type="submit">Send</button>
+    </form>
+
+    <script type="text/javascript">
+        var socket = io('http://localhost:3333')
+        
+        function renderMessage(message){
+            $('.messages').append('<div class="message-fix"><strong>'+message.author+'</strong><br>'+message.message+'</div>');
+        }
+        socket.on('previusMessage',function(messages){
+            for(message of messages){
+                renderMessage(message);
+            }
+        })
+        socket.on('receivedMessage', function(message){
+            renderMessage(message);
+        })
+
+        $('#chat').submit(function(event){
+            event.preventDefault();
+
+            var author = $('input[name=username]').val();
+            var message = $('input[name=message]').val();
+
+            if(author.length && message.length){
+                var menssageObject = {
+                    author: author,
+                    message: message,
+                }
+                renderMessage(menssageObject)
+                socket.emit('sendMessage', menssageObject);
+            
+            }
+        })
+    </script>
+</body>
+</html>
