@@ -6,7 +6,7 @@
 
 ## :rocket: Tecnologias
 
-This project was developed at the [RocketSeat OmniStack Week 7](https://rocketseat.com.br) with the following technologies:
+Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 -  [Node.js][nodejs]
 -  [Express](https://expressjs.com/)
